@@ -1,6 +1,6 @@
 # flutter_netease_cloud_music
 
-A new Flutter application.
+一个Flutter练手App.
 
 ## Getting Started
 

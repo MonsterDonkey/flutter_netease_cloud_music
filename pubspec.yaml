@@ -1,5 +1,5 @@
-name: flutter_netease_cloud_music
-description: A new Flutter application.
+name: flutter_music
+description: Flutter beginner.
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -24,17 +24,12 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
 
-  # Provider for manager state
-  # See: https://pub.dev/packages/provider
   provider: ^3.0.0+1
-
-  # DIO for net
   dio: ^2.1.0
-
-  # For json_serializable
   json_annotation: ^3.0.0
   json_serializable: ^3.2.0
-
+  fluro: ^1.5.1
+  shared_preferences: ^0.5.3+4
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -50,6 +45,15 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  fonts:
+    - family: iconfont
+      fonts:
+        - asset: iconfonts/iconfont.ttf
+
+  assets:
+    - images/cat.jpg
+    - images/glgs.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:
