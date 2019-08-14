@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_music/models/home_app_bar_model.dart';
-import 'package:flutter_music/models/home_top_tab_selected_model.dart';
+import 'package:flutter_music/models/home_top_model.dart';
 import 'package:flutter_music/utils/util_adapt.dart';
 import 'package:flutter_music/utils/util_strs.dart';
-import 'package:flutter_music/widgets/widget_common_text.dart';
+import 'package:flutter_music/widgets/widget_common.dart';
 import 'package:provider/provider.dart';
 
 import 'widget_home_menu_icon.dart';
@@ -20,7 +19,7 @@ class HomeAppBar {
         builder: (context) => new HomePageLeftMenuIcon(
           onPressed: () {
             Scaffold.of(context).openDrawer();
-            Provider.of<HomePageLeftMenuIconModel>(context).setCount(1);
+            Provider.of<HomePageTopModel>(context).setMenuPotSize(0);
           },
         ),
       );
@@ -55,16 +54,22 @@ class _HomePageTopBarState extends State<HomePageTopBar>
 
   @override
   Widget build(BuildContext context) {
-    return new Consumer<HomePageTopBarModel>(builder: (context, counter, _) {
-      return new TabBar(
-        tabs: _renderTab(context),
-        controller: tabController,
-        isScrollable: false,
-        indicator: UnderlineTabIndicator(),
-        onTap: (index) {
-          Provider.of<HomePageTopBarModel>(context).setSelected(index);
-          tabController.animateTo(index);
-        },
+    return new Consumer<HomePageTopModel>(builder: (context, counter, _) {
+      return new Center(
+        child: new TabBar(
+          labelPadding: EdgeInsets.all(0.0),
+          tabs: _renderTab(context),
+          controller: tabController,
+          isScrollable: false,
+          indicator: UnderlineTabIndicator(),
+          onTap: (index) {
+            Provider.of<HomePageTopModel>(context).setSelected(index);
+            if (Provider.of<HomePageTopModel>(context).redPot.index == index)
+              Provider.of<HomePageTopModel>(context).showOrHideRedPot(RedPotIndex.NONE);
+
+            tabController.animateTo(index);
+          },
+        ),
       );
     });
   }
@@ -74,14 +79,15 @@ class _HomePageTopBarState extends State<HomePageTopBar>
 
     for (int i = 0; i < Strs.HOME_TABLE.length; i++) {
       wList.add(new Container(
-        padding: new EdgeInsets.only(top: Adapt.px(5.0)),
-        child: CommonWidget.commonText(
+        padding: const EdgeInsets.all(0.0),
+        child: CommonWidget().commonTextWithRedPot(
             Strs.HOME_TABLE[i],
-            Provider.of<HomePageTopBarModel>(context).selectedIndex == i
+            Provider.of<HomePageTopModel>(context).selected == i
                 ? 34.0
                 : 32.0,
-            Provider.of<HomePageTopBarModel>(context).selectedIndex == i,
-            Provider.of<HomePageTopBarModel>(context).selectedIndex == i
+            Provider.of<HomePageTopModel>(context).selected == i,
+            Provider.of<HomePageTopModel>(context).redPot.index == i,
+            Provider.of<HomePageTopModel>(context).selected == i
                 ? Colors.black
                 : Colors.black54),
       ));
