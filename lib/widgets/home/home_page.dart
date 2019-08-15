@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_music/models/home_top_model.dart';
 import 'package:flutter_music/utils/util_strs.dart';
 import 'package:flutter_music/widgets/home/widget_home_drawer.dart';
+import 'package:provider/provider.dart';
 
 import 'widget_home_appbar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_music/utils/util_toast.dart';
 
-import 'package:provider/provider.dart';
-import 'package:flutter_music/models/home_top_model.dart';
+import 'dart:io';
 
 class HomePage extends StatefulWidget {
   @override
@@ -13,34 +16,47 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int preTime = 0;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    Future.delayed(new Duration(seconds: 10), (){
-      Provider.of<HomePageTopModel>(context).showOrHideRedPot(RedPotIndex.PAGE_3);
+    Future.delayed(new Duration(seconds: 10), () {
+      Provider.of<HomePageTopModel>(context)
+          .showOrHideRedPot(RedPotIndex.PAGE_3);
       Provider.of<HomePageTopModel>(context).setMenuPotSize(15);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: Strs.BACK_GROUND_TITLE,
-        theme: new ThemeData(
-          primaryColor: Colors.white,
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-        ),
-        home: new Scaffold(
-          backgroundColor: Colors.white,
-          drawer: HomePageDrawer().homeDrawer(),
-          appBar: HomeAppBar().appBar(),
-          body: new FlatButton(onPressed: (){
+    return new WillPopScope(
+        child: new MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: Strs.BACK_GROUND_TITLE,
+            theme: new ThemeData(
+              primaryColor: Colors.white,
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+            ),
+            home: new Scaffold(
+              backgroundColor: Colors.white,
+              drawer: HomePageDrawer().homeDrawer(),
+              appBar: HomeAppBar().appBar(),
+              body: new FlatButton(onPressed: () {}, child: new Text('+')),
+            )),
+        onWillPop: () {
+          int currentTime = DateTime.now().millisecondsSinceEpoch;
+          if (currentTime - preTime < 1000 || preTime == 0) {
+            preTime = currentTime;
+            ToastN.show("再按一次退出");
+            return;
+          }
 
-          }, child: new Text('+')),
-        ));
+          exit(0);
+          return;
+        });
   }
 }

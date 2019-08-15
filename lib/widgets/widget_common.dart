@@ -10,6 +10,7 @@ class CommonWidget {
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
           style: new TextStyle(
+              decoration: TextDecoration.none,
               fontSize: Adapt.sp(fontSize),
               color: color == null ? Colors.black : color,
               fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
@@ -31,7 +32,7 @@ class CommonWidget {
             child: isShowRedPot
                 ? new CircleAvatar(
                     radius: Adapt.px(8),
-                    backgroundColor: Colors.red,
+                    backgroundColor: Color.fromARGB(255, 198, 47, 47),
                   )
                 : new Container(),
             top: Adapt.px(25),

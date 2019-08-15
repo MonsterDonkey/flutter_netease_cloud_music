@@ -30,6 +30,7 @@ dependencies:
   json_serializable: ^3.2.0
   fluro: ^1.5.1
   shared_preferences: ^0.5.3+4
+  fluttertoast: ^3.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
