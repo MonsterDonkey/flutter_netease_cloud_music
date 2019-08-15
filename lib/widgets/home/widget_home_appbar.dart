@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_music/models/home_top_model.dart';
 import 'package:flutter_music/utils/util_adapt.dart';
-import 'package:flutter_music/utils/util_strs.dart';
+import 'package:flutter_music/utils/util_cons.dart';
 import 'package:flutter_music/widgets/widget_common.dart';
 import 'package:provider/provider.dart';
 
 import 'widget_home_menu_icon.dart';
 
 class HomeAppBar {
-  appBar() => new AppBar(
-    titleSpacing: 0.0,
+  appBar(controller) => new AppBar(
+        titleSpacing: 0.0,
         leading: _leading(),
-        title: HomePageTopBar(),
+        title: HomePageTopBar(
+          pageController: controller,
+        ),
         actions: _homeAction(),
       );
 
@@ -35,7 +37,12 @@ class HomeAppBar {
       ];
 }
 
+// ignore: must_be_immutable
 class HomePageTopBar extends StatefulWidget {
+  PageController pageController;
+
+  HomePageTopBar({Key key, this.pageController}) : super(key: key);
+
   @override
   _HomePageTopBarState createState() => _HomePageTopBarState();
 }
@@ -48,8 +55,7 @@ class _HomePageTopBarState extends State<HomePageTopBar>
   void initState() {
     // TODO: implement initState
     super.initState();
-    tabController =
-        new TabController(length: Strs.HOME_TABLE.length, vsync: this);
+    tabController = new TabController(length: Cons.HOME_TABLE.length, vsync: this);
   }
 
   @override
@@ -63,11 +69,16 @@ class _HomePageTopBarState extends State<HomePageTopBar>
           isScrollable: false,
           indicator: UnderlineTabIndicator(),
           onTap: (index) {
-            Provider.of<HomePageTopModel>(context).setSelected(index);
             if (Provider.of<HomePageTopModel>(context).redPot.index == index)
-              Provider.of<HomePageTopModel>(context).showOrHideRedPot(RedPotIndex.NONE);
+              Provider.of<HomePageTopModel>(context)
+                  .showOrHideRedPot(RedPotIndex.NONE);
 
-            tabController.animateTo(index);
+//            widget.pageController.animateTo(
+//                MediaQuery.of(context).size.width * index,
+//                duration: new Duration(milliseconds: 500),
+//                curve: Curves.ease);
+
+              widget.pageController.jumpTo(MediaQuery.of(context).size.width * index);
           },
         ),
       );
@@ -77,14 +88,11 @@ class _HomePageTopBarState extends State<HomePageTopBar>
   _renderTab(context) {
     List<Widget> wList = new List();
 
-    for (int i = 0; i < Strs.HOME_TABLE.length; i++) {
+    for (int i = 0; i < Cons.HOME_TABLE.length; i++) {
       wList.add(new Container(
-        padding: const EdgeInsets.all(0.0),
         child: CommonWidget().commonTextWithRedPot(
-            Strs.HOME_TABLE[i],
-            Provider.of<HomePageTopModel>(context).selected == i
-                ? 34.0
-                : 32.0,
+            Cons.HOME_TABLE[i],
+            Provider.of<HomePageTopModel>(context).selected == i ? 34.0 : 32.0,
             Provider.of<HomePageTopModel>(context).selected == i,
             Provider.of<HomePageTopModel>(context).redPot.index == i,
             Provider.of<HomePageTopModel>(context).selected == i

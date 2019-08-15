@@ -5,10 +5,12 @@ import 'package:flutter_music/widgets/home/widget_home_drawer.dart';
 import 'package:provider/provider.dart';
 
 import 'widget_home_appbar.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_music/utils/util_toast.dart';
+import 'widget_home_body.dart';
 
 import 'dart:io';
+
+
 
 class HomePage extends StatefulWidget {
   @override
@@ -17,12 +19,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int preTime = 0;
+  PageController _pageController;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
+    if (_pageController == null)
+      _pageController = new PageController();
     Future.delayed(new Duration(seconds: 10), () {
       Provider.of<HomePageTopModel>(context)
           .showOrHideRedPot(RedPotIndex.PAGE_3);
@@ -44,8 +49,8 @@ class _HomePageState extends State<HomePage> {
             home: new Scaffold(
               backgroundColor: Colors.white,
               drawer: HomePageDrawer().homeDrawer(),
-              appBar: HomeAppBar().appBar(),
-              body: new FlatButton(onPressed: () {}, child: new Text('+')),
+              appBar: HomeAppBar().appBar(_pageController),
+              body: HomeBody(pageController: _pageController,),
             )),
         onWillPop: () {
           int currentTime = DateTime.now().millisecondsSinceEpoch;

@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 
 class HomePageTopModel extends ChangeNotifier {
   int _selectedIndex = 0;
-  RedPotIndex _redPotIndex = RedPotIndex.NONE;
 
+  RedPotIndex _redPotIndex = RedPotIndex.NONE;
   int _menuPotNum = 0;
 
   int get selected => _selectedIndex;
-
   RedPotIndex get redPot => _redPotIndex;
-
   int get menuRpNum => _menuPotNum;
 
   void setMenuPotSize(int size) {
